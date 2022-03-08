@@ -1,5 +1,4 @@
------------------------------------
--- 1. DQL(Data Query Languege)
+1. DQL(Data Query Languege)
 select *, distinct, 컬럼명, (first_name ||' ' || last_name) 'name', "",  서브쿼리
 from : table, data set: (서브 쿼리)가 가능
 where : 조건절, 서브쿼리
@@ -11,21 +10,20 @@ order by : 순서, 정렬
 select (first_name ||' '|| last_name) "Name"
 from employees
 
--------------------
--- select 절에서 서브쿼리의 사용
+
+<select 절에서 서브쿼리의 사용>
 select last_name, job_id,
 	(select department_name 
 		from departments
 		where e.department_id = department_id) as depName
 from employees e
 
--- from 절에서 서브쿼리의 사용
+<from 절에서 서브쿼리의 사용>
 select *
 from (select department_id, sum(salary) 
        from employees
 	  group by department_id ) s
 
---
 -- 단일 연산자 : =, >, <, >=, <=, <>
 -- 다중 연산자 : in, any, all
 select last_name, job_id, department_id
@@ -38,8 +36,7 @@ from employees
 group by department_id
 having min(salary) > (select min(salary)
                         from employees
-					where department_id = '50')
-;					
+		        where department_id = '50');					
 
 -- having절의 서브쿼리 사용...
 -- 평균 급여가 가장 적은(2780) 업무(PU_CLERK)은 어떤것이가?
@@ -49,15 +46,14 @@ from employees
 group by job_id
 having avg(salary) = (select min(avg(salary))
                        from employees
-					   group by job_id)
+		       group by job_id)
 
 
 -- 다중행의 반환 서브쿼리
 -- 직원의 최소 급여를 받는 직원의이름, 직종, 급여들은 조회하시오..
 select last_name, job_id, salary
 from employees
-where job_id in (select distinct job_id from employees where salary > 5000)
-;
+where job_id in (select distinct job_id from employees where salary > 5000);
  
 -- in(or), any(or), all(and)
 -- any(or), all(and)
@@ -75,35 +71,35 @@ where job_id in (select distinct job_id from employees where salary > 5000)
 select department_id, last_name, salary
 from employees
 where salary >any (select salary 
-				from employees 
-				where job_id = 'IT_PROG')
+			from employees 
+			where job_id = 'IT_PROG')
 
 -- 급여가 9000보다 적게받는 직원의 이름
 select department_id, last_name, salary
 from employees
 where salary >any (select salary 
-				from employees 
-				where job_id = 'IT_PROG')
+			from employees 
+			where job_id = 'IT_PROG')
 
 select department_id, last_name, salary
 from employees
 where salary >all (select salary 
-				from employees 
-				where job_id = 'IT_PROG')
+			from employees 
+			where job_id = 'IT_PROG')
 
 -- null 값을 리턴하는 서브쿼리 -> no rows
 select last_name, salary	
 from employees	
 where salary > (select salary 
-				from employees where salary > 50000) 
+			from employees where salary > 50000) 
 
 -- where 여러컬럼을 사용.
 select last_name, job_id, salary
 from employees
 where (department_id, job_id) in  (select department_id, job_id 
-						from employees
-						group by department_id, job_id
-						having  avg(salary) > 5000);
+					from employees
+					group by department_id, job_id
+					having  avg(salary) > 5000);
 
 -- 문제 풀이
 --26			
@@ -145,8 +141,8 @@ with samp as (
 select * from samp;
 
 
------------------------------------
--- 2. DML(Data Manipulation Languege)
+
+2. DML(Data Manipulation Languege)
 -- 삽입(inert), 수정(update), 삭제(delete)
 -- rollback, commit, savepoint
 
